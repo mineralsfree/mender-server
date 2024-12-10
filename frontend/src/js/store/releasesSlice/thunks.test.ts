@@ -27,6 +27,7 @@ import {
   getExistingReleaseTags,
   getRelease,
   getReleases,
+  getSingleRelease,
   getUpdateTypes,
   removeArtifact,
   removeRelease,
@@ -191,15 +192,15 @@ describe('release actions', () => {
     const expectedActions = [
       { type: selectRelease.pending.type },
       { type: actions.selectedRelease.type, payload: defaultState.releases.byId.r1.name },
-      { type: getRelease.pending.type },
+      { type: getSingleRelease.pending.type },
       { type: actions.receiveRelease.type, payload: defaultState.releases.byId.r1 },
-      { type: getRelease.fulfilled.type },
+      { type: getSingleRelease.fulfilled.type },
       { type: selectRelease.fulfilled.type }
     ];
     await store.dispatch(selectRelease(defaultState.releases.byId.r1.name));
     const storeActions = store.getActions();
     expect(storeActions.length).toEqual(expectedActions.length);
-    expectedActions.map((action, index) => expect(storeActions[index]).toMatchObject(action));
+    expectedActions.forEach((action, index) => expect(storeActions[index]).toMatchObject(action));
   });
   it('should allow creating an artifact', async () => {
     const store = mockStore({ ...defaultState });
@@ -220,7 +221,7 @@ describe('release actions', () => {
       { type: getReleases.pending.type },
       { type: selectRelease.pending.type },
       { type: actions.selectedRelease.type, payload: 'createdRelease' },
-      { type: getReleases.pending.type }
+      { type: getSingleRelease.pending.type }
     ];
     await store.dispatch(
       createArtifact({ file: { name: 'createdRelease', some: 'thing', someList: ['test', 'more'], complex: { objectThing: 'yes' } }, meta: 'filethings' })
@@ -245,11 +246,11 @@ describe('release actions', () => {
       { type: getReleases.pending.type },
       { type: selectRelease.pending.type },
       { type: actions.selectedRelease.type, payload: defaultState.releases.byId.r1.name },
-      { type: getReleases.pending.type },
+      { type: getSingleRelease.pending.type },
       { type: actions.receiveRelease.type, payload: defaultState.releases.byId.r1 },
       { type: actions.receiveRelease.type, payload: defaultState.releases.byId.r1 },
       { type: getReleases.fulfilled.type },
-      { type: getReleases.fulfilled.type },
+      { type: getSingleRelease.fulfilled.type },
       { type: selectRelease.fulfilled.type },
       { type: editArtifact.fulfilled.type }
     ];

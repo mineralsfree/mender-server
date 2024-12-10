@@ -261,7 +261,7 @@ export const selectRelease = createAsyncThunk(`${sliceName}/selectRelease`, (rel
   const name = release ? release.name || release : null;
   let tasks = [dispatch(actions.selectedRelease(name))];
   if (name) {
-    tasks.push(dispatch(getRelease(name)));
+    tasks.push(dispatch(getSingleRelease(name)));
   }
   return Promise.all(tasks);
 });
@@ -332,6 +332,16 @@ export const getReleases = createAsyncThunk(`${sliceName}/getReleases`, (passedC
       return Promise.all(tasks);
     })
     .catch(err => commonErrorHandler(err, `Please check your connection`, dispatch));
+});
+
+export const getSingleRelease = createAsyncThunk(`${sliceName}/getSingleRelease`, async (name, { dispatch, getState }) => {
+  const releaseResponse = await GeneralApi.get(`${deploymentsApiUrlV2}/deployments/releases/${name}`);
+  const { data: release } = releaseResponse;
+  if (release) {
+    const stateRelease = getReleasesById(getState())[release.name] || {};
+    await dispatch(actions.receiveRelease(flattenRelease(release, stateRelease)));
+  }
+  return Promise.resolve(null);
 });
 
 export const getRelease = createAsyncThunk(`${sliceName}/getReleases`, (name, { dispatch, getState }) =>
