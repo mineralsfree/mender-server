@@ -11,10 +11,12 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { defaultTextRender } from '@northern.tech/common-ui/DeviceIdentity';
 import Time, { ApproximateRelativeDate } from '@northern.tech/common-ui/Time';
+import { getFeatures } from '@northern.tech/store/appSlice/selectors';
 import { DEVICE_STATES, currentArtifact, rootfsImageVersion } from '@northern.tech/store/constants';
 import pluralize from 'pluralize';
 
@@ -31,10 +33,18 @@ export const DefaultAttributeRenderer = ({ column, device, idAttribute }) => (
   <AttributeRenderer content={column.textRender({ device, column, idAttribute })} textContent={column.textRender({ device, column, idAttribute })} />
 );
 
-export const getDeviceSoftwareText = (attributes = {}) => attributes[rootfsImageVersion] || '-';
-export const DeviceSoftware = ({ device }) => (
-  <AttributeRenderer content={getDeviceSoftwareText(device.attributes)} textContent={getDeviceSoftwareText(device.attributes)} />
-);
+export const getDeviceSoftwareText = (attributes = {}, haveRootFsImage) =>
+  attributes[rootfsImageVersion] || (haveRootFsImage && attributes.artifact_name) || '-';
+
+export const DeviceSoftware = ({ device }) => {
+  const { haveRootFsImage } = useSelector(getFeatures);
+  return (
+    <AttributeRenderer
+      content={getDeviceSoftwareText(device.attributes, haveRootFsImage)}
+      textContent={getDeviceSoftwareText(device.attributes, haveRootFsImage)}
+    />
+  );
+};
 
 export const getDeviceArtifactText = (attributes = {}) => attributes.artifact_name || '-';
 export const DeviceArtifact = ({ device }) => (

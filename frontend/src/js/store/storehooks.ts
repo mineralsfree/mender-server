@@ -69,7 +69,8 @@ const featureFlags = [
   'hasFeedbackEnabled',
   'hasReporting',
   'hasMonitor',
-  'isEnterprise'
+  'isEnterprise',
+  'hasRootFsImage'
 ];
 
 const environmentDatas = ['commit', 'feedbackProbability', 'hostAddress', 'hostedAnnouncement', 'recaptchaSiteKey', 'sentry', 'stripeAPIKey', 'trackerCode'];
