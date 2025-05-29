@@ -40,7 +40,8 @@ cat >/var/www/mender-gui/dist/env.js <<EOF
       hasMultitenancy: "$HAVE_MULTITENANT",
       hasReleaseTags: "$HAVE_RELEASE_TAGS",
       hasReporting: "$HAVE_REPORTING",
-      isEnterprise: "$HAVE_ENTERPRISE"
+      isEnterprise: "$HAVE_ENTERPRISE",
+      hasRootFsImage: "$HAVE_ROOTFS_IMAGE"
     },
     feedbackProbability: "${FEEDBACK_PROBABILITY:-0.3}",
     trackerCode: "$TRACKER_CODE",
