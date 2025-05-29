@@ -34,15 +34,14 @@ export const DefaultAttributeRenderer = ({ column, device, idAttribute }) => (
   <AttributeRenderer content={column.textRender({ device, column, idAttribute })} textContent={column.textRender({ device, column, idAttribute })} />
 );
 
-export const getDeviceSoftwareText = (attributes = {}, haveRootFsImage) =>
-  attributes[rootfsImageVersion] || (haveRootFsImage && attributes.artifact_name) || '-';
+export const getDeviceSoftwareText = (attributes = {}, hasRootFsImage) => attributes[rootfsImageVersion] || (hasRootFsImage && attributes.artifact_name) || '-';
 
 export const DeviceSoftware = ({ device }) => {
-  const { haveRootFsImage } = useSelector(getFeatures);
+  const { hasRootFsImage } = useSelector(getFeatures);
   return (
     <AttributeRenderer
-      content={getDeviceSoftwareText(device.attributes, haveRootFsImage)}
-      textContent={getDeviceSoftwareText(device.attributes, haveRootFsImage)}
+      content={getDeviceSoftwareText(device.attributes, hasRootFsImage)}
+      textContent={getDeviceSoftwareText(device.attributes, hasRootFsImage)}
     />
   );
 };
