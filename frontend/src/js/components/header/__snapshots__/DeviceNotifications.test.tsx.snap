@@ -515,52 +515,56 @@ exports[`DeviceNotifications Component > popover renders correctly when opened 1
       class="margin-top-small"
     >
       <div
-        class="flexbox column margin-bottom-small padding-x-small emotion-13  "
+        class="margin-bottom-small"
       >
         <div
-          class="flexbox full-width space-between"
+          class="flexbox column padding-x-small emotion-13  "
         >
           <div
-            class="flexbox"
+            class="flexbox full-width space-between"
           >
-            <h6
-              class="MuiTypography-root MuiTypography-subtitle2 capitalized-start emotion-14"
+            <div
+              class="flexbox"
             >
-              standard
-            </h6>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 capitalized-start emotion-14"
+              >
+                standard
+              </h6>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body2 emotion-7"
+            >
+              100
+              /250
+            </p>
           </div>
-          <p
-            class="MuiTypography-root MuiTypography-body2 emotion-7"
-          >
-            100
-            /250
-          </p>
-        </div>
-        <div
-          class="margin-bottom-x-small margin-top-x-small"
-        >
-          <span
-            aria-valuemax="100"
-            aria-valuemin="0"
-            aria-valuenow="40"
-            class="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-determinate emotion-16"
-            role="progressbar"
+          <div
+            class="margin-top-x-small"
           >
             <span
-              class="MuiLinearProgress-bar MuiLinearProgress-bar1 MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Determinate emotion-17"
-              style="transform: translateX(-60%);"
-            />
-          </span>
-        </div>
-        <div
-          class="flexbox"
-        >
-          <span
-            class="MuiTypography-root MuiTypography-caption emotion-18"
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="40"
+              class="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-determinate emotion-16"
+              role="progressbar"
+            >
+              <span
+                class="MuiLinearProgress-bar MuiLinearProgress-bar1 MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Determinate emotion-17"
+                style="transform: translateX(-60%);"
+              />
+            </span>
+          </div>
+          <div
+            class="flexbox margin-top-x-small"
           >
-            40
-            % used
-          </span>
+            <span
+              class="MuiTypography-root MuiTypography-caption emotion-18"
+            >
+              40
+              % used
+            </span>
+          </div>
         </div>
       </div>
     </div>
