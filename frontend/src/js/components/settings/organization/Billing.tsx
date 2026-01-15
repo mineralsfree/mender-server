@@ -96,7 +96,7 @@ export const PlanDescriptor = ({
     <>
       You&apos;re currently on the <b>{plan} plan</b>.
       <br />
-      {deviceLimitNote}
+      {deviceLimit !== -1 ? deviceLimitNote : <>Your device limit is unlimited</>}
     </>
   );
 };
