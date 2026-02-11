@@ -15,13 +15,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Add as AddIcon } from '@mui/icons-material';
-import { Chip } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 
-import { getTenantsList } from '@northern.tech/store/organizationSlice/selectors';
-import { getTenants } from '@northern.tech/store/organizationSlice/thunks';
+import { getSpLimits, getTenantsList } from '@northern.tech/store/selectors';
 import { AppDispatch } from '@northern.tech/store/store';
+import { getTenants } from '@northern.tech/store/thunks';
 import { toggle } from '@northern.tech/utils/helpers';
 
+import { DeviceLimit } from '../header/DeviceNotifications';
 import { TenantCreateForm } from './TenantCreateForm';
 import { TenantList } from './TenantList';
 
@@ -43,16 +45,47 @@ const TenantsEmptyState = (props: TenantsEmptyStateProps) => {
     </div>
   );
 };
+
+const useStyles = makeStyles()(theme => ({
+  limit: {
+    border: `1px solid #E0E0E0`,
+    maxWidth: '726px'
+  }
+}));
+
 export const TenantPage = () => {
   const [showCreate, setShowCreate] = useState<boolean>(false);
+
+  const { classes } = useStyles();
+
   const { tenants } = useSelector(getTenantsList);
+  const spLimits = useSelector(getSpLimits);
 
   const onToggleCreation = useCallback(() => setShowCreate(toggle), []);
   return (
-    <div>
-      <h2>Tenants</h2>
+    <div className="padding-right">
+      <Typography variant="h5">Tenant management</Typography>
+      <Typography variant="subtitle1" className="margin-top-small">
+        Device limits
+      </Typography>
+      <div className={`full-width flexbox`}>
+        {Object.values(spLimits)
+          .map(limit => (
+            <div className={`full-width padding-small margin-right-small ${classes.limit}`}>
+              <DeviceLimit serviceProvider total={limit.current} limit={limit.limit} type={limit.name} />
+            </div>
+          ))}
+      </div>
+      <div className="flexbox full-width space-between">
+        <Typography variant="subtitle1" className="margin-top-small">
+          Tenants
+        </Typography>
+        <Button className="margin-top-small" variant="contained" onClick={onToggleCreation}>
+          Create a tenant
+        </Button>
+      </div>
+
       {tenants.length ? <TenantList /> : <TenantsEmptyState openModal={onToggleCreation} />}
-      <Chip className="margin-top-small" color="primary" icon={<AddIcon />} label="Add tenant" onClick={onToggleCreation} />
       {showCreate && <TenantCreateForm open={showCreate} onCloseClick={onToggleCreation} />}
     </div>
   );

@@ -26,7 +26,7 @@ import {
 import { Alert, Badge, Button, Divider, LinearProgress, Popover, Tooltip, Typography, alpha } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 
-import { getUserRoles, getDeviceLimitStats } from '@northern.tech/store/selectors';
+import { getDeviceLimitStats, getUserRoles } from '@northern.tech/store/selectors';
 import pluralize from 'pluralize';
 
 const useStyles = makeStyles()(theme => ({
@@ -66,6 +66,7 @@ const useStyles = makeStyles()(theme => ({
 interface DeviceLimitProps {
   compact?: boolean;
   limit: number;
+  serviceProvider?: boolean;
   total: number;
   type: string;
 }
@@ -73,7 +74,7 @@ interface DeviceLimitProps {
 const numberLocale = 'en-US';
 
 export const DeviceLimit = (props: DeviceLimitProps) => {
-  const { type, limit, total, compact = false } = props;
+  const { type, limit, total, compact = false, serviceProvider = false } = props;
   const unlimited = limit === -1;
   const warning = total / limit > 0.8 && total < limit && !unlimited;
   const error = total >= limit && !unlimited;
@@ -102,28 +103,33 @@ export const DeviceLimit = (props: DeviceLimitProps) => {
           </div>
 
           {!compact && (
-            <div className="flexbox margin-top-x-small">
-              <Typography variant="caption">{Math.floor((total / limit) * 100)}% used</Typography>
-              {warning && (
-                <>
-                  <Typography variant="caption" className="margin-left-x-small margin-right-x-small">
-                    •
-                  </Typography>{' '}
-                  <Typography variant="caption" color="warning">
-                    Near limit
-                  </Typography>
-                </>
-              )}
-              {error && (
-                <>
-                  <Typography variant="caption" className="margin-left-x-small margin-right-x-small">
-                    •
-                  </Typography>{' '}
-                  <Typography variant="caption" color="error">
-                    Limit reached
-                  </Typography>
-                </>
-              )}
+            <div className="flexbox margin-top-x-small space-between">
+              <div className="flexbox">
+                <Typography variant="caption">
+                  {Math.floor((total / limit) * 100)}% {serviceProvider ? 'allocated' : 'used'}
+                </Typography>
+                {warning && (
+                  <>
+                    <Typography variant="caption" className="margin-left-x-small margin-right-x-small">
+                      •
+                    </Typography>{' '}
+                    <Typography variant="caption" color="warning">
+                      Near limit
+                    </Typography>
+                  </>
+                )}
+                {error && (
+                  <>
+                    <Typography variant="caption" className="margin-left-x-small margin-right-x-small">
+                      •
+                    </Typography>{' '}
+                    <Typography variant="caption" color="error">
+                      Limit reached
+                    </Typography>
+                  </>
+                )}
+              </div>
+              {serviceProvider && <Typography variant="caption">{limit - total} remaining</Typography>}
             </div>
           )}
         </>
@@ -152,7 +158,6 @@ const DeviceNotifications = ({ className = '', total, pending }) => {
     handleClose();
     navigate('/devices/pending');
   };
-
 
   const severityMap = { 0: 'primary', 1: 'warning', 2: 'error' };
 

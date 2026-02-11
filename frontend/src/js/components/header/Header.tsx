@@ -381,7 +381,6 @@ export const Header = ({ isDarkMode }) => {
         </div>
         {isSp ? (
           <>
-            {tenantDeviceLimit > 0 && <DeviceCount current={spDeviceUtilization} max={tenantDeviceLimit} variant="common" />}
             <div className="flexbox center-aligned">
               <Chip className="bold muted uppercased" label="Service Provider" />
               <AccountMenu />

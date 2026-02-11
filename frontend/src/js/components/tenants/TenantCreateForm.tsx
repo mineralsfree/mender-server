@@ -133,7 +133,7 @@ export const TenantCreateForm = (props: TenantCreateFormProps) => {
   const [adminExists, setAdminExists] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
 
-  const quota = spDeviceLimit - spDeviceUtilization || 0;
+  const quota = spDeviceLimit - spDeviceUtilization || 1000;
   const numericValidation = {
     min: { value: 1, message: 'The limit must be 1 or more' },
     max: { value: quota, message: `The device limit must be ${quota} or fewer` }
@@ -154,7 +154,12 @@ export const TenantCreateForm = (props: TenantCreateFormProps) => {
   const submitNewTenant = useCallback(
     async data => {
       const { email, password, device_limit, send_reset_password, sso, ...remainder } = data;
-      let selectionState = { device_limit: Number(device_limit), restrict_sso_to_parent: sso, sso, ...remainder };
+      let selectionState = {
+        'device_limits': { 'max_devices': { 'Name': 'max_devices', 'value': 1 }, 'max_micro_devices': { 'Name': 'max_micro_devices', 'value': 1 } },
+        restrict_sso_to_parent: sso,
+        sso,
+        ...remainder
+      };
       if (adminExists) {
         selectionState = { users: [{ role: rolesByName.admin, email }], ...selectionState };
       } else {
